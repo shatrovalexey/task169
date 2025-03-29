@@ -45,7 +45,7 @@ class Api extends Controller
     */
     public function delBooking(int $id)
     {
-        return !!Bookings::find($id)::delete(),];
+        return !!Bookings::find($id)::delete();
     }
 
     /**
