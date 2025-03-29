@@ -8,55 +8,55 @@ use Illuminate\Http\Request;
 
 class Api extends Controller
 {
-	/**
-	* Получение списка всех ресурсов
-	*/
+    /**
+    * Получение списка всех ресурсов
+    */
     public function getResources(Request $request)
     {
-		return new ResourcesResource(Resources::get());
+        return new ResourcesResource(Resources::get());
     }
 
-	/**
-	* Создание ресурса
-	*/
+    /**
+    * Создание ресурса
+    */
     public function addResource(Request $request)
     {
-		$objh = new Resources();
-		foreach (['name', 'type', 'description',] as $key) $objh->$key = $request->input($key);
-		$objh->save();
+        $objh = new Resources();
+        foreach (['name', 'type', 'description',] as $key) $objh->$key = $request->input($key);
+        $objh->save();
 
-		return new ResourcesResource($objh);
+        return new ResourcesResource($objh);
     }
 
-	/**
-	* Получение всех бронирований для ресурса
-	*
-	* @param int $id
-	*/
+    /**
+    * Получение всех бронирований для ресурса
+    *
+    * @param int $id
+    */
     public function getBookings(int $id)
     {
-		return new BookingResource(Bookings::where('resource_id', $id)->get());
+        return new BookingResource(Bookings::where('resource_id', $id)->get());
     }
 
-	/**
-	* Отмена бронирования
-	*
-	* @param int $id
-	*/
+    /**
+    * Отмена бронирования
+    *
+    * @param int $id
+    */
     public function delBooking(int $id)
     {
-		return Bookings::delete('id', $id);
+        return !!Bookings::find($id)::delete(),];
     }
 
-	/**
-	* Создание бронирования
-	*/
+    /**
+    * Создание бронирования
+    */
     public function addBooking(Request $request)
     {
-		$objh = new Bookings();
-		foreach (['resource_id', 'user_id', 'start_time', 'end_time',] as $key) $objh->$key = $request->input($key);
-		$objh->save();
+        $objh = new Bookings();
+        foreach (['resource_id', 'user_id', 'start_time', 'end_time',] as $key) $objh->$key = $request->input($key);
+        $objh->save();
 
-		return new BookingResource($objh);
+        return new BookingResource($objh);
     }
 }
