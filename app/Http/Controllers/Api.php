@@ -22,7 +22,7 @@ class Api extends Controller
     public function addResource(Request $request)
     {
 		$objh = new Resources();
-		$objh->fill($request->all());
+		foreach (['name', 'type', 'description',] as $key) $objh->$key = $request->input($key);
 		$objh->save();
 
 		return new ResourcesResource($objh);
@@ -53,6 +53,10 @@ class Api extends Controller
 	*/
     public function addBooking(Request $request)
     {
-		return new BookingResource(Bookings::create($request->only(['resource_id', 'user_id', 'start_time', 'end_time',])));
+		$objh = new Bookings();
+		foreach (['resource_id', 'user_id', 'start_time', 'end_time',] as $key) $objh->$key = $request->input($key);
+		$objh->save();
+
+		return new BookingResource($objh);
     }
 }

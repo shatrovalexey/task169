@@ -11,7 +11,7 @@ class Bookings extends Model {
 		,
 	];
 
-	public function saving(static $model) {
+	public static function saving($model) {
 		parent::saving($model);
 
 		$validator = Validator::make($model->attributes, [
@@ -34,7 +34,9 @@ class Bookings extends Model {
 	*/
 	public static function clean()
 	{
-		return static::where('start_time', '<', now())
-			->andWhereRaw('(? NOT BETWEEN start_time AND end_time)', [now(),])->delete();
+		return static::whereRaw('
+(? NOT BETWEEN start_time AND end_time)
+	AND (start_time < ?)
+		', [now(), now(),])->delete();
 	}
 }
